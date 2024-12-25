@@ -13,10 +13,11 @@ function Home() {
             setItems(json)
             setIsLoading(false)
          })
+      window.scrollTo(0, 0)
    }, [])
 
    return (
-      <React.Fragment>
+      <div className="container">
          <div className="content__top">
             <Categories />
             <Sort />
@@ -29,7 +30,7 @@ function Home() {
                     return <PizzaBlock key={obj.id} {...obj} />
                  })}
          </div>
-      </React.Fragment>
+      </div>
    )
 }
 
