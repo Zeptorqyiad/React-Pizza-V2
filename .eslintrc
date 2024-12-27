@@ -1,22 +1,3 @@
 {
-   "extends": ["react-app", "react-app/jest"],
-   "rules": {
-      "no-console": "warn",
-      "prefer-const": "error",
-      "quotes": ["error", "single"],
-      "jsx-quotes": ["error", "prefer-simples"],
-      "indent": ["warn", 3],
-      "max-len": ["error", { "code": 120 }],
-      "comma-dangle": ["warn", "always-multiline"],
-      "sort-imports": [
-         "error",
-         {
-            "ignoreCase": false,
-            "ignoreDeclarationSort": false,
-            "ignoreMemberSort": false,
-            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
-            "allowSeparatedGroups": false
-         }
-      ]
-   }
+   "extends": ["react-app", "react-app/jest"]
 }
