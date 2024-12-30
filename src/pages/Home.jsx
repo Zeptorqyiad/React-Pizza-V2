@@ -1,15 +1,25 @@
 import React from 'react'
+import { SearchContext } from '../App'
 
-import { Categories, Sort, PizzaBlock, Skeleton } from '../components'
+import {
+   Categories,
+   Sort,
+   PizzaBlock,
+   Skeleton,
+   Pagination,
+} from '../components'
 
-const Home = ({ searchValue }) => {
+const Home = () => {
    const [items, setItems] = React.useState([])
    const [isLoading, setIsLoading] = React.useState(true)
    const [categoryId, setCategoryId] = React.useState(0)
+   const [currentPage, setCurrentPage] = React.useState(1)
    const [sortType, setSortType] = React.useState({
-      name: 'популярности',
+      name: 'популярности(↑)',
       sortProperty: 'rating',
    })
+
+   const { searchValue } = React.useContext(SearchContext)
 
    React.useEffect(() => {
       setIsLoading(true)
@@ -19,7 +29,7 @@ const Home = ({ searchValue }) => {
       const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc'
 
       fetch(
-         `https://6764787b52b2a7619f5cae9d.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}`
+         `https://6764787b52b2a7619f5cae9d.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}`
       )
          .then((response) => response.json())
          .then((json) => {
@@ -27,7 +37,7 @@ const Home = ({ searchValue }) => {
             setIsLoading(false)
          })
       window.scrollTo(0, 0)
-   }, [categoryId, sortType])
+   }, [categoryId, sortType, currentPage])
 
    const pizzas = items
       .filter((obj) => {
@@ -61,6 +71,7 @@ const Home = ({ searchValue }) => {
          </div>
          <h2 className="content__title">Все пиццы</h2>
          <div className="content__items">{isLoading ? skeletons : pizzas}</div>
+         <Pagination onChangePage={(number) => setCurrentPage(number)} />
       </div>
    )
 }
