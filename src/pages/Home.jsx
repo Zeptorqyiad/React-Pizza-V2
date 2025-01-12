@@ -1,9 +1,11 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import qs from 'qs'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 import { SearchContext } from '../App'
-import { setCategoryId } from '../redux/slices/filterSlice'
+import { setCategoryId, setCurrentPage } from '../redux/slices/filterSlice'
 
 import {
    Categories,
@@ -14,18 +16,30 @@ import {
 } from '../components'
 
 const Home = () => {
+   const navigate = useNavigate()
    const dispatch = useDispatch()
-   const { categoryId, sort } = useSelector((state) => state.filter)
+   const { categoryId, sort, currentPage } = useSelector(
+      (state) => state.filter
+   )
 
    const [items, setItems] = React.useState([])
    const [isLoading, setIsLoading] = React.useState(true)
-   const [currentPage, setCurrentPage] = React.useState(1)
+
+   const onChangePage = () => (number) => {
+      dispatch(setCurrentPage(number))
+   }
 
    const onChangeCategory = (id) => {
       dispatch(setCategoryId(id))
    }
 
    const { searchValue } = React.useContext(SearchContext)
+
+   React.useEffect(() => {
+      if (window.location.search) {
+         const params = qs.parse(window.location.search.substring(1))
+      }
+   }, [])
 
    React.useEffect(() => {
       setIsLoading(true)
@@ -43,6 +57,16 @@ const Home = () => {
             setIsLoading(false)
          })
       window.scrollTo(0, 0)
+   }, [categoryId, sort.sortProperty, currentPage])
+
+   React.useEffect(() => {
+      const queryString = qs.stringify({
+         sortProperty: sort.sortProperty,
+         categoryId,
+         currentPage,
+      })
+
+      navigate(`?${queryString}`)
    }, [categoryId, sort.sortProperty, currentPage])
 
    const pizzas = items
@@ -74,7 +98,7 @@ const Home = () => {
          </div>
          <h2 className="content__title">Все пиццы</h2>
          <div className="content__items">{isLoading ? skeletons : pizzas}</div>
-         <Pagination onChangePage={(number) => setCurrentPage(number)} />
+         <Pagination currnetPage={currentPage} onChangePage={onChangePage} />
       </div>
    )
 }
