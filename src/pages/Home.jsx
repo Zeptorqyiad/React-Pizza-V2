@@ -1,8 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import qs from 'qs'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
 
 import { SearchContext } from '../App'
 import { setCategoryId, setCurrentPage } from '../redux/slices/filterSlice'
@@ -16,7 +14,6 @@ import {
 } from '../components'
 
 const Home = () => {
-   const navigate = useNavigate()
    const dispatch = useDispatch()
    const { categoryId, sort, currentPage } = useSelector(
       (state) => state.filter
@@ -36,12 +33,6 @@ const Home = () => {
    const { searchValue } = React.useContext(SearchContext)
 
    React.useEffect(() => {
-      if (window.location.search) {
-         const params = qs.parse(window.location.search.substring(1))
-      }
-   }, [])
-
-   React.useEffect(() => {
       setIsLoading(true)
 
       const category = categoryId > 0 ? `category=${categoryId}` : ''
@@ -57,16 +48,6 @@ const Home = () => {
             setIsLoading(false)
          })
       window.scrollTo(0, 0)
-   }, [categoryId, sort.sortProperty, currentPage])
-
-   React.useEffect(() => {
-      const queryString = qs.stringify({
-         sortProperty: sort.sortProperty,
-         categoryId,
-         currentPage,
-      })
-
-      navigate(`?${queryString}`)
    }, [categoryId, sort.sortProperty, currentPage])
 
    const pizzas = items
