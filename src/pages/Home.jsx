@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 
-import { SearchContext } from '../App'
 import {
    selectFilter,
    setCategoryId,
@@ -49,6 +49,7 @@ const Home = () => {
       window.scrollTo(0, 0)
    }
 
+   /* eslint-disable react-hooks/exhaustive-deps */
    React.useEffect(() => {
       getPizzas()
    }, [categoryId, sort.sortProperty, searchValue, currentPage])
@@ -67,7 +68,11 @@ const Home = () => {
                  }
                  return false
               })
-              .map((obj) => <PizzaBlock key={obj.id} {...obj} />)
+              .map((obj) => (
+                 <Link key={obj.id} to={`/pizza/${obj.id}`}>
+                    <PizzaBlock {...obj} />
+                 </Link>
+              ))
          : null
 
    const skeletons = [...new Array(10)].map((_, index) => (
