@@ -1,4 +1,3 @@
-import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 import { Home, NotFound, Cart, FullPizza } from './pages/index'

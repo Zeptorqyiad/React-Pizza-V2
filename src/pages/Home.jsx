@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
 
 import {
    selectFilter,
@@ -68,11 +67,7 @@ const Home = () => {
                  }
                  return false
               })
-              .map((obj) => (
-                 <Link key={obj.id} to={`/pizza/${obj.id}`}>
-                    <PizzaBlock {...obj} />
-                 </Link>
-              ))
+              .map((obj) => <PizzaBlock {...obj} key={obj.id} />)
          : null
 
    const skeletons = [...new Array(10)].map((_, index) => (
