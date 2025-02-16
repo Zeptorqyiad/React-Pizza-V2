@@ -25,15 +25,15 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({
 }) => {
    const dispatch = useDispatch()
    const cartItems = useSelector(selectCartItemById(id))
-   const [activeSize, setActiveSize] = React.useState(0)
-   const [activeType, setActiveType] = React.useState(types[0])
+   const [activeSize, setActiveSize] = React.useState<number>(0)
+   const [activeType, setActiveType] = React.useState<number>(types[0])
 
    const addedCount = cartItems ? cartItems.count : 0
 
-   const chooseSize = (index) => {
+   const chooseSize = (index: any) => {
       setActiveSize(index)
    }
-   const chooseType = (index) => {
+   const chooseType = (index: any) => {
       setActiveType(index)
    }
 

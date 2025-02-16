@@ -1,12 +1,12 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import {
    selectFilter,
    setCategoryId,
    setCurrentPage,
-} from '../redux/slices/filterSlice'
-import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice'
+} from "../redux/slices/filterSlice";
+import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice";
 
 import {
    Categories,
@@ -14,65 +14,66 @@ import {
    PizzaBlock,
    Skeleton,
    Pagination,
-} from '../components'
+} from "../components";
 
-const Home = () => {
-   const dispatch = useDispatch()
+const Home: React.FC = () => {
+   const dispatch = useDispatch();
 
    const { categoryId, sort, currentPage, searchValue } =
-      useSelector(selectFilter)
-   const { items, status } = useSelector(selectPizzaData)
+      useSelector(selectFilter);
+   const { items, status } = useSelector(selectPizzaData);
 
-   const onChangePage = () => (number) => {
-      dispatch(setCurrentPage(number))
-   }
+   const onChangePage = () => (page: number) => {
+      dispatch(setCurrentPage(page));
+   };
 
-   const onChangeCategory = (id) => {
-      dispatch(setCategoryId(id))
-   }
+   const onChangeCategory = (idx: number) => {
+      dispatch(setCategoryId(idx));
+   };
 
    const getPizzas = async () => {
-      const sortBy = sort.sortProperty.replace('-', '')
-      const order = sort.sortProperty.includes('-') ? 'asc' : 'desc'
-      const category = categoryId > 0 ? `category=${categoryId}` : ''
+      const sortBy = sort.sortProperty.replace("-", "");
+      const order = sort.sortProperty.includes("-") ? "asc" : "desc";
+      const category = categoryId > 0 ? `category=${categoryId}` : "";
 
       dispatch(
+         // @ts-ignore
          fetchPizzas({
             sortBy,
             order,
             category,
             currentPage,
          })
-      )
+      );
 
-      window.scrollTo(0, 0)
-   }
+      window.scrollTo(0, 0);
+   };
 
    /* eslint-disable react-hooks/exhaustive-deps */
    React.useEffect(() => {
-      getPizzas()
-   }, [categoryId, sort.sortProperty, searchValue, currentPage])
+      getPizzas();
+   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
    const pizzas =
       items && items.length > 0
          ? items
-              .filter((obj) => {
+              .filter((obj: any) => {
                  if (
                     obj.title
                        .toLowerCase()
                        .trim()
                        .includes(searchValue.trim().toLowerCase())
                  ) {
-                    return true
+                    return true;
                  }
-                 return false
+                 return false;
               })
-              .map((obj) => <PizzaBlock {...obj} key={obj.id} />)
-         : null
+              .map((obj: any) => <PizzaBlock {...obj} key={obj.id} />)
+         : null;
 
    const skeletons = [...new Array(10)].map((_, index) => (
       <Skeleton key={index} />
-   ))
+   ));
 
    return (
       <div className="container">
@@ -84,7 +85,7 @@ const Home = () => {
             <Sort />
          </div>
          <h2 className="content__title">Все пиццы</h2>
-         {status === 'error' ? (
+         {status === "error" ? (
             <div className="content__error-info">
                <h2>Произошла ошибка 😕</h2>
                <p>
@@ -94,12 +95,12 @@ const Home = () => {
             </div>
          ) : (
             <div className="content__items">
-               {status === 'loading' ? skeletons : pizzas}
+               {status === "loading" ? skeletons : pizzas}
             </div>
          )}
-         <Pagination currnetPage={currentPage} onChangePage={onChangePage} />
+         <Pagination onChangePage={onChangePage} />
       </div>
-   )
-}
+   );
+};
 
-export default Home
+export default Home;
