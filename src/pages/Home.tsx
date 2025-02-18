@@ -37,7 +37,6 @@ const Home: React.FC = () => {
       const category = categoryId > 0 ? `category=${categoryId}` : "";
 
       dispatch(
-         // @ts-ignore
          fetchPizzas({
             sortBy,
             order,

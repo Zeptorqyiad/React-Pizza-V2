@@ -1,52 +1,49 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-import { sortSelector, setSort } from '../redux/slices/filterSlice'
-
-// const ObjectInformation = {
-//    age: 15,
-//    city: 'Moscow',
-// }
+import { sortSelector, setSort } from "../redux/slices/filterSlice";
 
 type SortItem = {
-   name: string
-   sortProperty: string
-}
+   name: string;
+   sortProperty: string;
+};
 
 export const sortList: SortItem[] = [
-   { name: 'популярности(↑)', sortProperty: 'rating' },
-   { name: 'популярности(↓)', sortProperty: '-rating' },
-   { name: 'цене(↑)', sortProperty: 'price' },
-   { name: 'цене(↓)', sortProperty: '-price' },
-   { name: 'алфавиту(↑)', sortProperty: 'title' },
-   { name: 'алфавиту(↓)', sortProperty: '-title' },
-]
+   { name: "популярности(↑)", sortProperty: "rating" },
+   { name: "популярности(↓)", sortProperty: "-rating" },
+   { name: "цене(↑)", sortProperty: "price" },
+   { name: "цене(↓)", sortProperty: "-price" },
+   { name: "алфавиту(↑)", sortProperty: "title" },
+   { name: "алфавиту(↓)", sortProperty: "-title" },
+];
 
 export const Sort = React.memo(() => {
-   const dispatch = useDispatch()
-   const sort = useSelector(sortSelector)
-   const sortRef = React.useRef<HTMLDivElement>(null)
+   const dispatch = useDispatch();
+   const sort = useSelector(sortSelector);
+   const sortRef = React.useRef<HTMLDivElement>(null);
 
-   const [open, setOpen] = React.useState(false)
+   const [open, setOpen] = React.useState(false);
 
    const onClickListItem = (obj: SortItem) => {
-      dispatch(setSort(obj))
-      setOpen(false)
-   }
+      dispatch(setSort(obj));
+      setOpen(false);
+   };
 
    React.useEffect(() => {
-      const handleClickoutside = (e: any) => {
-         if (!e.composedPath().includes(sortRef.current)) {
-            setOpen(false)
+      const handleClickOutside = (event: MouseEvent) => {
+         if (
+            sortRef.current &&
+            !event.composedPath().includes(sortRef.current)
+         ) {
+            setOpen(false);
          }
-      }
+      };
 
-      document.body.addEventListener('click', handleClickoutside)
+      document.body.addEventListener("click", handleClickOutside);
 
-      return () => {
-         document.body.removeEventListener('click', handleClickoutside)
-      }
-   }, [])
+      return () =>
+         document.body.removeEventListener("click", handleClickOutside);
+   }, []);
 
    return (
       <div ref={sortRef} className="sort">
@@ -75,8 +72,8 @@ export const Sort = React.memo(() => {
                         onClick={() => onClickListItem(obj)}
                         className={
                            sort.sortProperty === obj.sortProperty
-                              ? 'active'
-                              : ''
+                              ? "active"
+                              : ""
                         }
                      >
                         {obj.name}
@@ -86,7 +83,7 @@ export const Sort = React.memo(() => {
             </div>
          )}
       </div>
-   )
-})
+   );
+});
 
-export default Sort
+export default Sort;

@@ -1,11 +1,11 @@
-import React from 'react'
-import ReactPaginate from 'react-paginate'
+import React from "react";
+import ReactPaginate from "react-paginate";
 
-import styles from './Pagintaion.module.scss'
+import styles from "./Pagintaion.module.scss";
 
 type PaginationProps = {
-   onChangePage: any
-}
+   onChangePage: (idx: number) => void;
+};
 
 const Pagination: React.FC<PaginationProps> = ({ onChangePage }) => {
    return (
@@ -19,7 +19,7 @@ const Pagination: React.FC<PaginationProps> = ({ onChangePage }) => {
          pageCount={3}
          renderOnZeroPageCount={null}
       />
-   )
-}
+   );
+};
 
-export default Pagination
+export default Pagination;

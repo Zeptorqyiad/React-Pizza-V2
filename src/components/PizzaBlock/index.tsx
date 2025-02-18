@@ -1,10 +1,14 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import React from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 
-import { addItem, selectCartItemById } from '../../redux/slices/cartSlice'
+import {
+   addItem,
+   CartItem,
+   selectCartItemById,
+} from "../../redux/slices/cartSlice"
 
-const typeNames = ['тонкое', 'традиционное']
+const typeNames = ["тонкое", "традиционное"]
 
 type PizzaBlockProps = {
    id: string
@@ -30,21 +34,22 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({
 
    const addedCount = cartItems ? cartItems.count : 0
 
-   const chooseSize = (index: any) => {
+   const chooseSize = (index: number) => {
       setActiveSize(index)
    }
-   const chooseType = (index: any) => {
+   const chooseType = (index: number) => {
       setActiveType(index)
    }
 
    const onClickAdd = () => {
-      const item = {
+      const item: CartItem = {
          id,
          title,
          price,
          imageUrl,
          type: typeNames[activeType],
          size: sizes[activeSize],
+         count: 0,
       }
       dispatch(addItem(item))
    }
@@ -62,7 +67,7 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({
                      <li
                         key={`${type}_${i}`}
                         onClick={() => chooseType(i)}
-                        className={activeType === type ? 'active' : ''}
+                        className={activeType === type ? "active" : ""}
                      >
                         {typeNames[type]}
                      </li>
@@ -73,7 +78,7 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({
                      <li
                         key={`${size}_${i}`}
                         onClick={() => chooseSize(i)}
-                        className={activeSize === i ? 'active' : ''}
+                        className={activeSize === i ? "active" : ""}
                      >
                         {size} см.
                      </li>
