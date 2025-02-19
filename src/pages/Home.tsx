@@ -1,12 +1,13 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react"
+import { useSelector } from "react-redux"
 
 import {
    selectFilter,
    setCategoryId,
    setCurrentPage,
-} from "../redux/slices/filterSlice";
-import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice";
+} from "../redux/slices/filterSlice"
+import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice"
+import { useAppDispatch } from "../redux/store"
 
 import {
    Categories,
@@ -14,44 +15,44 @@ import {
    PizzaBlock,
    Skeleton,
    Pagination,
-} from "../components";
+} from "../components"
 
 const Home: React.FC = () => {
-   const dispatch = useDispatch();
+   const dispatch = useAppDispatch()
 
    const { categoryId, sort, currentPage, searchValue } =
-      useSelector(selectFilter);
-   const { items, status } = useSelector(selectPizzaData);
+      useSelector(selectFilter)
+   const { items, status } = useSelector(selectPizzaData)
 
    const onChangePage = () => (page: number) => {
-      dispatch(setCurrentPage(page));
-   };
+      dispatch(setCurrentPage(page))
+   }
 
    const onChangeCategory = (idx: number) => {
-      dispatch(setCategoryId(idx));
-   };
+      dispatch(setCategoryId(idx))
+   }
 
    const getPizzas = async () => {
-      const sortBy = sort.sortProperty.replace("-", "");
-      const order = sort.sortProperty.includes("-") ? "asc" : "desc";
-      const category = categoryId > 0 ? `category=${categoryId}` : "";
+      const sortBy = sort.sortProperty.replace("-", "")
+      const order = sort.sortProperty.includes("-") ? "asc" : "desc"
+      const category = categoryId > 0 ? `category=${categoryId}` : ""
 
       dispatch(
          fetchPizzas({
             sortBy,
             order,
             category,
-            currentPage,
+            currentPage: String(currentPage),
          })
-      );
+      )
 
-      window.scrollTo(0, 0);
-   };
+      window.scrollTo(0, 0)
+   }
 
    /* eslint-disable react-hooks/exhaustive-deps */
    React.useEffect(() => {
-      getPizzas();
-   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
+      getPizzas()
+   }, [categoryId, sort.sortProperty, searchValue, currentPage])
 
    const pizzas =
       items && items.length > 0
@@ -63,16 +64,16 @@ const Home: React.FC = () => {
                        .trim()
                        .includes(searchValue.trim().toLowerCase())
                  ) {
-                    return true;
+                    return true
                  }
-                 return false;
+                 return false
               })
               .map((obj: any) => <PizzaBlock {...obj} key={obj.id} />)
-         : null;
+         : null
 
    const skeletons = [...new Array(10)].map((_, index) => (
       <Skeleton key={index} />
-   ));
+   ))
 
    return (
       <div className="container">
@@ -99,7 +100,7 @@ const Home: React.FC = () => {
          )}
          <Pagination onChangePage={onChangePage} />
       </div>
-   );
-};
+   )
+}
 
-export default Home;
+export default Home

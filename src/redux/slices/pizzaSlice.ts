@@ -27,6 +27,13 @@ const initialState: PizzaSliceState = {
    status: Status.LOADING, // loading | success | error
 }
 
+export type SearchPizzaParams = {
+   sortBy: string
+   order: string
+   category: string
+   currentPage: string
+}
+
 export const fetchPizzas = createAsyncThunk<Pizza[], Record<string, string>>(
    "pizza/fetchPizzasStatus",
    async (params) => {
